@@ -1,0 +1,70 @@
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-4 d-flex">
+      <div class="card d-fill">
+        <% if product.image.url.nil? == false %>
+          <div class="card-body">
+            <p><%= image_tag product.image.url, class: "img-fluid" %></p>
+          <% else %>
+            <div class="card-body">
+              <%= image_tag 'blank.png', class: "img-fluid" %>
+            <% end %>
+            <h3 class="text-center"><%= link_to product.name, product %></h3>
+            <p class="text-center"><%= number_to_currency product.price %></p>
+            <p class="text-center">
+              <a href="#" data-toggle="modal" data-target="#myModal_<%= product.id %>">
+                <i class="fa fa-plus"></i>
+                Quick Info
+              </a>
+            </p>
+          </div>
+          <div class="card-body"></div>
+          <div class="card-footer">
+            <p class="p-3">
+              <%= form_tag add_to_cart_path do %>
+              <%= hidden_field_tag :product_id, product.id, class: "mx-auto" %>
+              <%= number_field_tag :quantity, 1, placeholder: "How many?", id: "item-quantity" %>
+              <%= submit_tag "Add to Cart", class: "btn btn-primary", id: "item-submit" %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal_<%= product.id %>" tabindex="-1" role="dialog" aria-labelledby="aria-labelledby">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <% if product.image.url.nil? == false %>
+                <p><%= image_tag product.image.url, class: "img-fluid" %></p>
+              <% else %>
+                <%= image_tag 'blank.png', class: "img-fluid" %>
+              <% end %>
+              <h3><%= link_to product.name, product %></h3>
+              <p><%= number_to_currency product.price %></p>
+              <p>made by
+                <%= product.brand %></p>
+              <p>Qty:
+                <%= product.quantity%></p>
+            </div>
+            <div class="modal-footer">
+              <p>
+                <%= form_tag add_to_cart_path do %>
+                <%= hidden_field_tag :product_id, product.id %>
+                <%= number_field_tag :quantity, 1, placeholder: "How many?", id: "item-quantity" %>
+                <%= submit_tag "Add to Cart", class: "btn btn-primary", id: "item-submit" %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>

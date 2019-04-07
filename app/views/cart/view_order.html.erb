@@ -1,0 +1,38 @@
+<h2>My Cart</h2>
+<% if @line_items.length > 0 %>
+<div>
+  <% total = 0 %>
+    <% @line_items.each_with_index do |line_item, index| %>
+      <li>item:
+        <%= index + 1 %></li>
+      <li><%= line_item.product.name %></li>
+      <li><%= number_to_currency line_item.product.price %></li>
+      <li>Qty:
+        <%= line_item.quantity %></li>
+      <li>Item Subtotal:
+        <%= number_to_currency line_item.line_item_total %></li>
+      <% total += line_item.line_item_total%>
+        <br>
+        <!-- link_to "remove", clear_line_item_path(product_id: product.id), class: "btn btn-warning" -->
+        <br>
+      <% end %>
+
+      <li>Order Subtotal:
+        <%= number_to_currency total %></li>
+        <li>
+          Tax: 7%:     <%= number_to_currency total * 0.07 %>
+        </li>
+      <li>Order Grandtotal:
+        <%= number_to_currency total + (total * 0.07) %></li>
+    </div>
+
+    <div>
+      <%= link_to "Delete Cart", clear_cart_path, class: "btn btn-danger" %>
+      <%= link_to "Proceed to Checkout?", checkout_path, class: "btn btn-success" %>
+
+      <% else %>
+        <br>
+      <p>Hmmm.. Looks like you haven't put any items in your cart yet</p>
+      <%= link_to "Go to the store?", root_path, class: "" %>
+      <% end %>
+    </div>
